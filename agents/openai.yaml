@@ -1,0 +1,4 @@
+interface:
+  display_name: "Software System Anatomy"
+  short_description: "按系统母题快速解剖项目数据流、控制流、事件状态与架构主线"
+  default_prompt: "Use $software-system-anatomy to analyze this project from lifecycle, data flow, state, events, control flow, and extension points."
