@@ -2,7 +2,7 @@
 
 Use this reference when producing HTML or visual reports. The output must let a human see the architecture before reading paragraphs.
 
-When a `design-style` folder exists, pick one style document from it and state which style is applied. However, the chosen style must not break the architecture readability rules in this file.
+When `references/design-style/` exists, pick one style document from it and state which style is applied. However, the chosen style must not break the architecture readability rules in this file.
 
 ## Purpose
 
@@ -21,11 +21,13 @@ It is not decoration. It is the architecture preview. The reader should understa
 
 Use this priority order:
 
-1. **Inline SVG** for most architecture maps. This is the default for readable single-file HTML because text, arrows, labels, hover states, and layout are easier to control.
+1. **Local inline SVG** for most architecture maps. This is the default for readable single-file HTML because text, arrows, labels, hover states, and layout are easier to control.
 2. **Interactive HTML Canvas** only when the skill already has a fixed renderer or the graph is very large.
-3. **Mermaid** only for quick Markdown fallback, not for final visual reports.
+3. **Mermaid** only for quick Markdown fallback or source artifacts, not for final visual reports.
 
 Do not let the model freestyle a complex Canvas renderer unless the renderer is already part of the skill. If Canvas is used, the same architecture data model, spacing, edge, and quality rules below still apply.
+
+Do not call third-party drawing skills, online renderers, external diagram apps, CDNs, or hosted scripts by default. If the user explicitly asks for Excalidraw, Figma, or another editable drawing format, state that the default skill path is local SVG and ask before using the external format.
 
 ## Required Content
 
@@ -38,6 +40,20 @@ Every architecture canvas must include:
 - **Where to find it**: each important architecture node must map to repository folders/files.
 - **Evidence anchors**: each important node should have a file/module reference in a tooltip, side panel, or table below the canvas.
 - **Interpretation line**: one sentence saying what the map reveals.
+
+## Architecture Diagram Brief First
+
+Before drawing, write a compact Architecture Diagram Brief. This brief is the single source of truth for:
+
+- system boundary and external actors
+- main data artery
+- runtime/control owner
+- no more than 18 architecture nodes
+- edge types and labels
+- module-to-file mapping
+- evidence notes and uncertainty
+
+Save the brief when producing artifacts, usually as `artifacts/<project-name>-architecture-brief.md`. Render the SVG, optional Mermaid fallback, interpretation line, and module-to-file table from this same brief. Do not redraw from fresh assumptions after the brief exists.
 
 ## Data Model First
 
@@ -78,7 +94,7 @@ const architecture = {
 };
 ```
 
-Render from this model. Do not handwave the graph in prose. Do not draw directly from vague module names.
+Render from this model, which should be derived from the Architecture Diagram Brief. Do not handwave the graph in prose. Do not draw directly from vague module names.
 
 ## Node Layers
 
@@ -240,11 +256,11 @@ Rules:
 
 For full HTML reports, use this order:
 
-1. Hero verdict: “not X, but Y”, product experience, one-sentence spine.
-2. Snapshot cards: experience, runtime/control owner, data artery, state/event heart, extension surface, risk boundary, read-first, spark.
-3. Architecture canvas: node-link map with legend and highlighted main artery.
+1. Report hero derived from the final report title, product experience, and one-sentence spine.
+2. Snapshot derived from the report's `30 秒总览`, not invented by the HTML layer.
+3. Architecture canvas: local SVG node-link map with legend and highlighted main artery.
 4. Module/folder map: same node labels mapped to repository folders/files.
-5. Evidence layer: collapsible file/function references.
+5. Evidence layer: file/function references, collapsible only when optional.
 
 If the user asks “只画架构图”, output only the architecture-map section, legend, and short interpretation line.
 
@@ -335,7 +351,7 @@ The script must draw:
 - Avoid hairball graphs. If there are more than 18 nodes, group nodes into clusters.
 - Use labels short enough to fit inside nodes.
 - Do not use color decoratively; color must mean edge or node type.
-- The graph should fit desktop width and degrade to horizontal scrolling or zoom on small screens.
+- The graph should fit comfortable desktop reading widths. Do not spend effort on narrow mobile layouts unless the user explicitly asks.
 - If the map looks crowded, expand the coordinate space before reducing font sizes.
 
 ## Architecture Map Test

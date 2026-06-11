@@ -51,7 +51,9 @@ Then add three bullets:
 
 ## 2. 架构预览图
 
-For HTML reports, this section is mandatory and should appear before long prose. Use `architecture-canvas.md`.
+For HTML reports, this section is mandatory and should appear before long prose. Build an Architecture Diagram Brief first, then use `architecture-canvas.md` to render and embed a local SVG. Do not call third-party drawing skills or online renderers unless the user explicitly asks.
+
+For final HTML rendering, use `html-report.md`. It owns style selection from `references/design-style/`, report-to-HTML transformation, desktop reading behavior, and Chrome DevTools validation gates. This file owns report content order; `html-report.md` owns HTML presentation.
 
 The preview must show:
 
@@ -63,13 +65,16 @@ The preview must show:
 | Main artery | the strongest visible path from input to output |
 | Where to find it | repository folder/file mapping for important nodes |
 | Evidence | file/module references for important nodes and edges |
-| Interaction | draggable canvas viewport with zoom in/out, fit/reset, and expand controls |
+| Source artifact | Architecture Diagram Brief, plus optional Mermaid fallback source |
+| HTML integration | embedded local SVG with a link to the brief |
 
 Then add one interpretation line:
 
 ```text
 这张架构图的核心意思是：[central runtime/control owner] 把 [inputs] 收束起来，围绕 [state/model] 调度 [actions/extensions/resources]。
 ```
+
+The diagram, this interpretation line, and the module-to-file mapping must use the same node names.
 
 ## 3. 一句话主线
 

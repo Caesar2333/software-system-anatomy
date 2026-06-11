@@ -58,7 +58,7 @@ If available, read project orientation files first: `AGENTS.md`, `CLAUDE.md`, `F
    Show where the project matches the expected model and where it has a distinctive "spark": unusual runtime shape, clever extension mechanism, surprising state model, hidden scheduler, or domain-specific flow.
 
 7. Produce a learning report.
-   Use `references/report-template.md` for the default report. Keep it architecture-first, data-flow-first, and concrete.
+   Use `references/report-template.md` for the default report. For HTML output, build one Architecture Diagram Brief first, render a local SVG architecture map with `references/architecture-canvas.md`, then use `references/html-report.md` as the final report renderer. Keep it architecture-first, data-flow-first, and concrete.
 
 ## Output Contract
 
@@ -67,7 +67,8 @@ Every report must be readable in two layers:
 1. **First screen: anatomy snapshot.** Give the product experience, "not X but Y" reframing, runtime/control owner, core data artery, state/event heart, extension surface, top risks, first reading target, and project spark.
 2. **Evidence layer: expandable detail.** Put code references, longer flow explanations, edge cases, and uncertain inferences after the snapshot.
 
-HTML reports must include a draggable/zoomable visual architecture canvas before long details. Use `references/architecture-canvas.md` to show nodes, relationships, vivid flow direction, and where each node lives in the repository.
+HTML reports must include the local SVG architecture diagram before long details. Generate it from one Architecture Diagram Brief, use `references/architecture-canvas.md`, keep node labels consistent with the module-to-file mapping, and link the brief when artifacts are produced.
+For HTML layout, read `references/html-report.md`. If `references/design-style/` exists in the skill folder, select one style file as visual guidance before writing CSS.
 When source files are available, include folder/module analysis. Use `references/source-structure.md` to explain what each important folder contains, which architecture module it maps to, why it exists, and where to start reading.
 
 The first screen should answer:
@@ -90,11 +91,13 @@ Load only what the task needs:
 
 - `references/core-model.md` - the conceptual model and vocabulary.
 - `references/product-bridge.md` - product experience, capability-to-module derivation, technical choice tradeoffs, and modification entry points.
-- `references/architecture-canvas.md` - visual architecture map and module-to-files contract for HTML/SVG/canvas outputs.
+- `references/architecture-canvas.md` - architecture preview and local SVG rendering contract: brief first, SVG second, HTML embedding third.
 - `references/source-structure.md` - folder-to-module and key folder analysis for real repositories.
 - `references/analysis-checklist.md` - questions for source exploration.
 - `references/domain-mapping.md` - mappings for backend, frontend, embedded, agent, framework, game, and plugin systems.
 - `references/report-template.md` - default output structure.
+- `references/html-report.md` - final report-to-HTML rendering, style selection from `references/design-style/`, interaction rules, and Chrome DevTools validation gates.
+- `references/design-style/` - optional local style references for report visual direction; load only one relevant file when present.
 
 ## Output Rules
 
@@ -132,4 +135,6 @@ Use these sections unless the user asks for a different shape:
 - Do not treat architecture as automatically good because it is abstract.
 - Do not drown the user in minor functions before explaining the main operating story.
 - Do not stay abstract; explain real folders/files and the capability pressure behind each module when source is available.
-- Do not let cards, tables, Mermaid, or prose be the only overview; provide a visual node-link architecture map for HTML reports.
+- Do not generate diagrams directly from vague module names; render from the Architecture Diagram Brief.
+- Do not let cards, tables, Mermaid, or prose be the only overview; provide an embedded local SVG node-link architecture map for HTML reports.
+- Do not depend on third-party diagram skills, CDNs, or online renderers unless the user explicitly requests them.
